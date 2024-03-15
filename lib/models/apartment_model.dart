@@ -4,31 +4,6 @@
 
 import 'dart:convert';
 
-ApartmentModel apartmentModelFromJson(String str) =>
-    ApartmentModel.fromJson(json.decode(str));
-
-String apartmentModelToJson(ApartmentModel data) => json.encode(data.toJson());
-
-class ApartmentModel {
-  final List<Apartment>? apartments;
-
-  ApartmentModel({
-    this.apartments,
-  });
-
-  factory ApartmentModel.fromJson(Map<String, dynamic> json) => ApartmentModel(
-        apartments: json["apartments"] == null
-            ? []
-            : List<Apartment>.from(
-                json["apartments"]!.map((x) => Apartment.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "apartments": apartments == null
-            ? []
-            : List<dynamic>.from(apartments!.map((x) => x.toJson())),
-      };
-}
 
 class Apartment {
   final String? id;

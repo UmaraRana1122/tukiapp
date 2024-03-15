@@ -34,22 +34,6 @@ class _GuestDashboardState extends State<GuestDashboard> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool loading = false;
 
-  getData() async {
-    setState(() {
-      loading = true;
-    });
-    await _adminController.getAdminDashBoard(context);
-    setState(() {
-      loading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,438 +119,161 @@ class _GuestDashboardState extends State<GuestDashboard> {
           ],
         ),
       ),
-      body: loading
-          ? const Center(
+      body: FutureBuilder<void>(
+        future: _adminController.getAdminDashBoard(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(
-              color: AppColors.primaryColor,
-            ))
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            PageTransition.pageNavigation(
-                                page: const OwnerListing());
-                          },
-                          child: Container(
-                            height: 6.h,
-                            width: 40.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff57009b26),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  width: 3.h,
-                                  height: 10.w,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Replace with your desired color
-                                  ),
-                                  child: Center(
-                                      child: Text(_adminController
-                                          .adminDashBoard.owners
-                                          .toString())),
-                                ),
-                                Container(
-                                  child: Center(
-                                      child: Text(
-                                    "Your Invitations",
-                                    style: bodySmall,
-                                  )),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            PageTransition.pageNavigation(
-                                page: const BookingListing());
-                          },
-                          child: Container(
-                            height: 6.h,
-                            width: 40.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff57009b26),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  width: 3.h,
-                                  height: 10.w,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Replace with your desired color
-                                  ),
-                                  child: Center(
-                                      child: Text(_adminController
-                                          .adminDashBoard.bookings
-                                          .toString())),
-                                ),
-                                Container(
-                                  child: Center(
-                                      child: Text(
-                                    "Bookings",
-                                    style: bodySmall,
-                                  )),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                color: AppColors.primaryColor,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text("Error: ${snapshot.error}"),
+            );
+          } else {
+            return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "Upcoming Events",
-                            style: title.copyWith(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                          InkWell(
+                            onTap: () {
+                              PageTransition.pageNavigation(
+                                  page: const OwnerListing());
+                            },
+                            child: Container(
+                              height: 6.h,
+                              width: 40.w,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff57009b26),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 3.h,
+                                    height: 10.w,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors
+                                          .white, // Replace with your desired color
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      _adminController.adminDashBoard.owners
+                                              .toString(), // Use null check operator and provide a default value
+                                    )),
+                                  ),
+                                  Container(
+                                    child: Center(
+                                        child: Text(
+                                      "Your Invitations",
+                                      style: bodySmall,
+                                    )),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                           InkWell(
                             onTap: () {
                               PageTransition.pageNavigation(
-                                  page: EventListing(
-                                eventData: _adminController.adminDashBoard,
-                              ));
+                                  page: const BookingListing());
                             },
                             child: Container(
-                              height: 3.h,
-                              width: 20.w,
+                              height: 6.h,
+                              width: 40.w,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300],
+                                color: const Color(0xff57009b26),
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
-                              child: Center(
-                                  child: Text(
-                                "View All",
-                                style: bodyNormal,
-                              )),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 1.5.h,
-                    ),
-                    Container(
-                      height: 33.h,
-                      width: 90.w,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                Colors.black.withOpacity(0.1), // Shadow color
-                            spreadRadius: 5,
-                            blurRadius: 10, // Offset of the shadow
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Center(
-                              child: Image.asset(
-                                "assest/images/eventImage.png",
-                                width: 80.w,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Sample Resturent",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  "\$200",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "2 Seats Available",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                Text(
-                                  "- 10pm to 12am",
-                                  style: TextStyle(fontWeight: FontWeight.w400),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Text(
-                              "Description Candle Light Dinner Description Candle Light DinnerDescription Candle Light Dinner...",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Expiry Date: 14-12-2023",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red),
-                                ),
-                                Spacer(),
-                                Text(
-                                  "",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.keyboard_double_arrow_left_sharp),
-                          Text("Previous",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w600)),
-                          Spacer(),
-                          Text("Next",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w600)),
-                          Icon(Icons.keyboard_double_arrow_right_sharp),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Your Invitations",
-                            style: bodyNormal.copyWith(
-                                fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        width: 90.w,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF2F9FF),
-                          border: Border.all(
-                            color: const Color(0xffc6c6ff), // Border width
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Invited By:",
-                                style: bodyNormal.copyWith(
-                                    fontWeight: FontWeight.w500, fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Row(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Image.asset(
-                                    "assest/images/ownerName.png",
-                                    height: 5.h,
+                                  Container(
+                                    width: 3.h,
+                                    height: 10.w,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors
+                                          .white, // Replace with your desired color
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      _adminController.adminDashBoard.bookings
+                                              .toString() ??
+                                          '0', // Use null check operator and provide a default value
+                                    )),
                                   ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Nelson Aston",
-                                        style: bodyNormal.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10.sp),
-                                      ),
-                                      Text(
-                                        "nelson@gmail.com",
-                                        style: bodyNormal.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey,
-                                            fontSize: 10.sp),
-                                      ),
-                                    ],
+                                  Container(
+                                    child: Center(
+                                        child: Text(
+                                      "Bookings",
+                                      style: bodySmall,
+                                    )),
                                   )
                                 ],
                               ),
-                              Divider(),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Text(
-                                "Your Ticket",
-                                style: bodyNormal.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontSize: 10.sp),
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Container(
-                                height: 15.h,
-                                width: 100.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.grey)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 1.h,
-                                          ),
-                                          Text(
-                                            "ID#111111332",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            "Sample Restaurant will come here",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            "10pm to 12am",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            "From(11:00 PM)  To (12:00 AM)",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            "Exp Date : 14-12-2023",
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      ),
-                                      Image.asset(
-                                        "assest/images/barcode.png",
-                                        height: 13.h,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Upcoming Events",
+                              style: title.copyWith(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                PageTransition.pageNavigation(
+                                    page: EventListing(
+                                  eventData: _adminController.adminDashBoard!,
+                                ));
+                              },
+                              child: Container(
+                                height: 3.h,
+                                width: 20.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "View All",
+                                  style: bodyNormal,
+                                )),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     TextButton(
-                    //       onPressed: () {},
-                    //       child: Text(
-                    //         "<-Previous",
-                    //         style: bodyNormal,
-                    //       ),
-                    //     ),
-                    //     TextButton(
-                    //       onPressed: () {},
-                    //       child: Text(
-                    //         "Next->",
-                    //         style: bodyNormal,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-              ),
-            ),
+                      // Rest of your code...
+                    ],
+                  ),
+                ));
+          }
+        },
+      ),
     );
   }
 }

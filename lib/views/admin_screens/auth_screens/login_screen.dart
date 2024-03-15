@@ -21,7 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final AuthController _authController = Get.find<AuthController>();
   final TextEditingController emailEditingController = TextEditingController();
-  final TextEditingController passwordEditingController = TextEditingController();
+  final TextEditingController passwordEditingController =
+      TextEditingController();
   bool _rememberMe = false;
 
   final GlobalKey<FormState> key = GlobalKey<FormState>();
@@ -43,28 +44,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       "Log in to your account",
-                      style: bodyLarge.copyWith(fontWeight: FontWeight.bold, fontSize: 3.h),
+                      style: bodyLarge.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 3.h),
                     ),
                   ),
                   SizedBox(
-                    height: 2.h,
+                    height: 1.h,
                   ),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Welcome back! Please enter your details",
-                      style: bodyLarge.copyWith(color: Colors.grey),
+                      style: bodyNormal.copyWith(color: Colors.grey),
                     ),
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 0, bottom: 5.0),
+                    padding:
+                        const EdgeInsets.only(left: 0, right: 0, bottom: 5.0),
                     child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Email address", style: hintText.copyWith(color: AppColors.hintColor))),
+                        child: Text("Email address",
+                            style: hintText.copyWith(
+                                color: AppColors.hintColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13.sp))),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.all(0),
                     child: AuthTextField(
@@ -78,10 +86,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 2.h,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 0, bottom: 5.0),
+                    padding:
+                        const EdgeInsets.only(left: 0, right: 0, bottom: 5.0),
                     child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Password", style: hintText.copyWith(color: AppColors.hintColor))),
+                        child: Text("Password",
+                            style: hintText.copyWith(
+                                color: AppColors.hintColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13.sp))),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(0),
@@ -113,10 +126,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4.0),
                                 border: Border.all(
-                                  color: _rememberMe ? AppColors.primaryColor : Colors.white,
+                                  color: _rememberMe
+                                      ? AppColors.primaryColor
+                                      : Colors.black,
                                   width: 2.0,
                                 ),
-                                color: _rememberMe ? AppColors.primaryColor : Colors.white,
+                                color: _rememberMe
+                                    ? AppColors.primaryColor
+                                    : Colors.white,
                               ),
                               child: _rememberMe
                                   ? const Icon(
@@ -130,7 +147,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               'Remember for 30 days',
                               style: hintText.copyWith(
-                                  color: AppColors.hintColor, fontWeight: FontWeight.bold, fontSize: 15),
+                                  color: AppColors.hintColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
                             ),
                           ],
                         ),
@@ -141,8 +160,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: Text(
                           "Forgot password",
-                          style:
-                              hintText.copyWith(color: AppColors.hintColor, fontWeight: FontWeight.bold, fontSize: 15),
+                          style: hintText.copyWith(
+                              color: AppColors.hintColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
                         ),
                       ),
                     ],
@@ -153,7 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: CustomButton(
                       buttonText: "Sign in",
                       onTap: () {
-                        PageTransition.pageProperNavigation(page: const AdminDashboard());
+                        PageTransition.pageProperNavigation(
+                            page: const AdminDashboard());
 
                         // Map<String, String> map = {
                         //   'api_v1_user[email]':

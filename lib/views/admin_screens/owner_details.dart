@@ -20,7 +20,8 @@ class OwnerDetails extends StatefulWidget {
 class _OwnerDetailsState extends State<OwnerDetails> {
   bool loading = false;
   bool isLoading = false;
-  ApartmentModel? apartment;
+  Apartment? apartment;
+
   @override
   void initState() {
     getApartmentData();
@@ -31,26 +32,38 @@ class _OwnerDetailsState extends State<OwnerDetails> {
     setState(() {
       isLoading = true;
     });
-   var headers = {
+
+    var headers = {
       'Authorization': 'Bearer <token>',
       'Cookie':
           'auth_session=UMBYMIkdVwqQCPPqgEckzi7xTKaKp5cBiTthoCBaHkUzmqwQCKOkB1b9CFUkY0eulYfAju88t97Tijo0FklipQ9NkUCt%2F%2FY4RsYBPcGZkKSj7ZEDkWMX8ilbIbnzRLLOo2uYMuDyoOTjiDZ69FJpCgqgxoVUglgx0orq37wVR6mTVpQcIaoMEGYadmYeiIqbUDRRBbZ0gQ4rIYBI5OmCMVCFJXZ5Vf2097eBvlfxfGeBPxOdF9zB02vtMFyReLa4Cm9sGMe8qcWKst1qnnOoeoYglk3szfWo%2FKTobBvgEiW6bv3XRJtCvh164ft%2Fjj4aRRnvno28FZ5H6dkGfAW2BqCCNrBfcM%2BKMteeTLbz2Y4%3D--FwrSzzcYnP0IplU4--j7RppB6DN4h5Vk%2FoJRRzlg%3D%3D'
     };
+
     var request = http.Request(
-        'GET',
-        Uri.parse(
-            'https://tuki-api-0398bb6381b8.herokuapp.com/api/v1/apartments'));
+      'GET',
+      Uri.parse(
+          'https://tuki-api-0398bb6381b8.herokuapp.com/api/v1/apartments'),
+    );
 
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      // Decode the response
+      var jsonResponse = await response.stream.bytesToString();
+      var decodedResponse = jsonDecode(jsonResponse);
+
+      // Parse the decoded response into ApartmentModel
+      apartment = Apartment.fromJson(decodedResponse);
+
+      // Now you have the apartment data in the 'apartment' variable
+      print('Apartment ID: ${apartment!.id}');
+      print('Apartment Name: ${apartment!.number}');
+      print('Apartment Location: ${apartment!.community!.name}');
     } else {
       print(response.reasonPhrase);
     }
-
 
     setState(() {
       isLoading = false;
@@ -188,7 +201,9 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "#0000000",
+                                  apartment != null
+                                      ? apartment!.community!.id.toString()
+                                      : 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -207,7 +222,9 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "building Name here",
+                                  apartment != null
+                                      ? apartment!.community!.name.toString()
+                                      : 'Test Community',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -223,7 +240,9 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "02/11/2000",
+                                  apartment != null
+                                      ? apartment!.community!.id.toString()
+                                      : 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -539,24 +558,3 @@ class _OwnerDetailsState extends State<OwnerDetails> {
     );
   }
 }
-// InkWell(
-//                             onTap: () {
-//                               PageTransition.pageNavigation(
-//                                   page: EventListing(
-//                                 eventData: _adminController.adminDashBoard,
-//                               ));
-//                             },
-//                             child: Container(
-//                               height: 3.h,
-//                               width: 20.w,
-//                               decoration: BoxDecoration(
-//                                 color: Colors.grey[300],
-//                                 borderRadius: BorderRadius.circular(5.0),
-//                               ),
-//                               child: Center(
-//                                   child: Text(
-//                                 "View All",
-//                                 style: bodyNormal,
-//                               )),
-//                             ),
-//                           )

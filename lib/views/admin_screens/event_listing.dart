@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
@@ -9,14 +10,17 @@ import '../../models/admin_dashboard_model.dart';
 import 'create_event.dart';
 
 class EventListing extends StatefulWidget {
-  final AdminDashBoardModel eventData;
+  final AdminDashBoardModel? eventData;
   const EventListing({Key? key, required this.eventData}) : super(key: key);
 
   @override
   State<EventListing> createState() => _EventListingState();
 }
 
+
+
 class _EventListingState extends State<EventListing> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,13 +38,15 @@ class _EventListingState extends State<EventListing> {
           icon: Icon(
             Icons.navigate_before_outlined,
             color: Colors.black,
-          ), // You can use any other icon you prefer
+          ),
           onPressed: () {
             Get.back();
           },
         ),
       ),
-      body: Padding(
+      body: 
+      
+      Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
@@ -63,7 +69,7 @@ class _EventListingState extends State<EventListing> {
                       width: 25.w,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.blue, // Border width
+                          color: Colors.blue,
                         ),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -81,8 +87,12 @@ class _EventListingState extends State<EventListing> {
             Divider(),
             Expanded(
               child: ListView.builder(
-                itemCount: widget.eventData.events.length,
+                itemCount: widget.eventData?.events.length ?? 0,
                 itemBuilder: (c, i) {
+                  if (widget.eventData == null) {
+                    return SizedBox.shrink();
+                  }
+                  final event = widget.eventData!.events[i];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -93,10 +103,9 @@ class _EventListingState extends State<EventListing> {
                         borderRadius: BorderRadius.circular(5.0),
                         boxShadow: [
                           BoxShadow(
-                            color:
-                                Colors.black.withOpacity(0.1), // Shadow color
+                            color: Colors.black.withOpacity(0.1),
                             spreadRadius: 5,
-                            blurRadius: 10, // Offset of the shadow
+                            blurRadius: 10,
                           ),
                         ],
                       ),
@@ -117,7 +126,7 @@ class _EventListingState extends State<EventListing> {
                             padding:
                                 const EdgeInsets.only(left: 18.0, right: 18.0),
                             child: Text(
-                              widget.eventData.events[i].name.toString(),
+                              event.name.toString(),
                               style: bodyNormal.copyWith(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -132,14 +141,12 @@ class _EventListingState extends State<EventListing> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${widget.eventData.events[i].seats} Seats Available",
+                                  "${event.seats} Seats Available",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "\$" +
-                                      widget.eventData.events[i].ticket!.price
-                                          .toString(),
+                                  "\$" + event.ticket!.price.toString(),
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -161,8 +168,7 @@ class _EventListingState extends State<EventListing> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  widget.eventData.events[i].description
-                                      .toString(),
+                                  event.description.toString(),
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
@@ -184,12 +190,12 @@ class _EventListingState extends State<EventListing> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Created :${DateFormat("dd-MM-yyyy").format(widget.eventData.events[0].startDate)}",
+                                  "Created :${DateFormat("dd-MM-yyyy").format(event.startDate)}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "Expired :${DateFormat("dd-MM-yyyy").format(widget.eventData.events[0].endDate)}",
+                                  "Expired :${DateFormat("dd-MM-yyyy").format(event.endDate)}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.red[700]),
                                 ),
@@ -211,8 +217,8 @@ class _EventListingState extends State<EventListing> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${"Time: " + widget.eventData.events[0].startTime.toString()} to " +
-                                      widget.eventData.events[0].endTime.toString(),
+                                  "${"Time: " + event.startTime.toString()} to " +
+                                      event.endTime.toString(),
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),

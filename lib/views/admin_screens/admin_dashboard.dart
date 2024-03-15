@@ -28,7 +28,7 @@ import 'guard_listing.dart';
 import 'owners_listing.dart';
 
 class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({Key? key}) : super(key: key);
+  const AdminDashboard({super.key});
 
   @override
   State<AdminDashboard> createState() => _AdminDashboardState();
@@ -164,6 +164,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ],
         ),
       ),
+      
       body: loading
           ? const Center(
               child: CircularProgressIndicator(
@@ -177,6 +178,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     SizedBox(
                       height: 1.h,
                     ),
+                      // ignore: unrelated_type_equality_checks
+                      if (_adminController.adminDashBoard != true)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -732,3 +735,4 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 }
+

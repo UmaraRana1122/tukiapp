@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/admin_login.dart';
+import 'package:tukiapp/views/admin_screens/auth_screens/login_screen.dart';
 import 'package:tukiapp/views/admin_screens/co_owner_details.dart';
 import 'package:tukiapp/views/admin_screens/create_event.dart';
 import 'package:tukiapp/views/admin_screens/create_owner.dart';
@@ -79,7 +80,9 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: OwnerDetails(),
+        home: const EventListing(
+          eventData: null,
+          ),
       );
     });
   }
