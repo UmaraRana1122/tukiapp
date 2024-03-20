@@ -11,7 +11,7 @@ class LabeledTextField extends StatelessWidget {
     Key? key,
     required this.heading,
     this.validator,
-    this.hintText = '', required bool readOnly,
+    this.hintText = '', required bool readOnly, required TextEditingController controller,
   }) : super(key: key);
 
   @override

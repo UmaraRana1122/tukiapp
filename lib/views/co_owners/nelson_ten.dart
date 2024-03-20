@@ -363,7 +363,7 @@ class _NelsonTenantsState extends State<NelsonTenants> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard.events[0].endDate)}",
+                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard!.events[0].endDate)}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.red[700]),
                                 ),

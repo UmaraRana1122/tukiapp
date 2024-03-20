@@ -11,33 +11,35 @@ import 'general_controller.dart';
 
 class AdminController extends GetxController {
   
-  late AdminDashBoardModel adminDashBoard;
+  
+  AdminDashBoardModel? adminDashBoard;
   
   final GeneralController _generalController = Get.find<GeneralController>();
 
   get apiError => false;
 
-  Future getAdminDashBoard(BuildContext context) async {
-    var response = await DataApiService.instance
-        .get('/admin/dashboard')
-        .catchError((error) {
-      print("error");
-      print(error.message!);
-      if (error is BadRequestException) {
-        CustomDialogBox.showErrorDialog(
-            description: apiError["error"], context: context);
-      } else {
-        _generalController.handleError(error.message!, context);
-      }
-    });
-    if (response == null) return;
-    var result = json.decode(response);
-    print("result");
-    print(result);
-    print("response.statusCode");
-    print(response);
+  final GeneralController generalController = Get.find<GeneralController>();
+  bool loading = false;
 
-    adminDashBoard = AdminDashBoardModel.fromJson(result);
-    return "true";
+  Future<void> getAdminDashBoard(BuildContext context) async {
+    if (loading) return;
+
+    loading = true;
+    update();
+
+    try {
+      var response = await DataApiService.instance.get('/admin/dashboard');
+      var result = json.decode(response);
+      adminDashBoard = AdminDashBoardModel.fromJson(result);
+    } catch (error) {
+      print("Error fetching admin dashboard: $error");
+      CustomDialogBox.showErrorDialog(
+        description: "Error fetching admin dashboard",
+        context: context,
+      );
+    } finally {
+      loading = false;
+      update();
+    }
   }
 }

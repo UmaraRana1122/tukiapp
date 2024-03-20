@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/admin_login.dart';
+import 'package:tukiapp/views/admin_screens/auth_screens/edit_profile.dart';
 import 'package:tukiapp/views/admin_screens/auth_screens/login_screen.dart';
+import 'package:tukiapp/views/admin_screens/auth_screens/new_password.dart';
 import 'package:tukiapp/views/admin_screens/co_owner_details.dart';
+import 'package:tukiapp/views/admin_screens/co_tenant_details.dart';
 import 'package:tukiapp/views/admin_screens/create_event.dart';
+import 'package:tukiapp/views/admin_screens/create_guard.dart';
 import 'package:tukiapp/views/admin_screens/create_owner.dart';
 import 'package:tukiapp/views/admin_screens/event_listing.dart';
 import 'package:tukiapp/views/admin_screens/owner_details.dart';
@@ -38,6 +42,7 @@ import 'package:tukiapp/views/owner_screens/elimination.dart';
 import 'package:tukiapp/views/owner_screens/guest_list.dart';
 import 'package:tukiapp/views/owner_screens/log.dart';
 import 'package:tukiapp/views/owner_screens/my_bookings.dart';
+import 'package:tukiapp/views/owner_screens/neslon_dash.dart';
 import 'package:tukiapp/views/owner_screens/owner_check.dart';
 import 'package:tukiapp/views/owner_screens/owner_profile.dart';
 import 'package:tukiapp/views/owner_screens/owners.dart';
@@ -80,9 +85,9 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const EventListing(
-          eventData: null,
-          ),
+        home: const AdminDashboard(
+            // eventData: null,
+            ),
       );
     });
   }

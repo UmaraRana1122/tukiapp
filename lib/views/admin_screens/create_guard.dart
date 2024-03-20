@@ -17,6 +17,17 @@ class CreateGuard extends StatefulWidget {
 }
 
 class _CreateGuardState extends State<CreateGuard> {
+  // Create controllers for text fields
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _nationalIdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
+  final TextEditingController _licensePlateController = TextEditingController();
+  final TextEditingController _buildingNameController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   void _showAlertDialog() {
     showDialog(
       context: context,
@@ -81,31 +92,34 @@ class _CreateGuardState extends State<CreateGuard> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildSection("Personal Details", [
-              "First Name",
-              "Last Name",
-              "National ID No",
-              "Email",
-              "Contact No",
-            ]),
-            _buildSection("Other Details", [
-              "License Plate",
-              "Building Name",
-              "Date of Birth",
-            ]),
-            _buildSection("Credentials", ["Email", "Password"]),
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child: CustomButton(
-                buttonText: "Done",
-                onTap: () {
-                  _showAlertDialog();
-                },
+        child: Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: Column(
+            children: [
+              _buildSection("Personal Details", [
+                "First Name",
+                "Last Name",
+                "National ID No",
+                "Email",
+                "Contact No",
+              ]),
+              _buildSection("Other Details", [
+                "License Plate",
+                "Building Name",
+                "Date of Birth",
+              ]),
+              _buildSection("Credentials", ["Email", "Password"]),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: CustomButton(
+                  buttonText: "Done",
+                  onTap: () {
+                    _showAlertDialog();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -128,9 +142,9 @@ class _CreateGuardState extends State<CreateGuard> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 0,
+                left: 5,
                 right: 0,
-                bottom: 15.0,
+                bottom: 5.0,
                 top: 10.0,
               ),
               child: Text(
@@ -139,13 +153,44 @@ class _CreateGuardState extends State<CreateGuard> {
               ),
             ),
             for (var field in fields)
-              LabeledTextField(
-                heading: field,
-                validator: (value) => CustomValidator.email(value), readOnly: false,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: LabeledTextField(
+                  heading: field,
+                  validator: (value) => CustomValidator.email(value),
+                  controller: _getController(field),
+                  readOnly: false,
+                ),
               ),
           ],
         ),
       ),
     );
+  }
+
+  // Helper method to get the appropriate controller for each field
+  TextEditingController _getController(String field) {
+    switch (field) {
+      case "First Name":
+        return _firstNameController;
+      case "Last Name":
+        return _lastNameController;
+      case "National ID No":
+        return _nationalIdController;
+      case "Email":
+        return _emailController;
+      case "Contact No":
+        return _contactController;
+      case "License Plate":
+        return _licensePlateController;
+      case "Building Name":
+        return _buildingNameController;
+      case "Date of Birth":
+        return _dobController;
+      case "Password":
+        return _passwordController;
+      default:
+        return TextEditingController();
+    }
   }
 }

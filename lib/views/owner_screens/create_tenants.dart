@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/widgets/labeled_textfield.dart';
 
 import '../../constants/custom_validators.dart';
 import '../../constants/global_variables.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/custom_widget.dart';
+import '../admin_screens/widgets/labeled_textfield.dart';
 
 class CreateTenants extends StatefulWidget {
   const CreateTenants({Key? key}) : super(key: key);
@@ -17,6 +17,17 @@ class CreateTenants extends StatefulWidget {
 
 class _CreateTenantsState extends State<CreateTenants> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController nationalIdController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController contactNoController = TextEditingController();
+  TextEditingController licensePlateController = TextEditingController();
+  TextEditingController buildingNameController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController tenantEmailController = TextEditingController();
+  TextEditingController tenantPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -139,12 +150,41 @@ class _CreateTenantsState extends State<CreateTenants> {
             ),
             for (var field in fields)
               LabeledTextField(
-                heading: field, readOnly: false,
+                heading: field,
+                readOnly: false,
+                controller: _getControllerForField(field),
               ),
           ],
         ),
       ),
     );
+  }
+
+  TextEditingController _getControllerForField(String fieldName) {
+    switch (fieldName) {
+      case "First Name":
+        return firstNameController;
+      case "Last Name":
+        return lastNameController;
+      case "National ID No":
+        return nationalIdController;
+      case "Email":
+        return emailController;
+      case "Contact No":
+        return contactNoController;
+      case "License Plate":
+        return licensePlateController;
+      case "Building Name":
+        return buildingNameController;
+      case "Date of Birth":
+        return dobController;
+      case "Credentials":
+        return tenantEmailController;
+      case "Password":
+        return tenantPasswordController;
+      default:
+        return TextEditingController();
+    }
   }
 
   void _showAlertDialog() {

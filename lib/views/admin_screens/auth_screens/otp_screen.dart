@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import 'new_password.dart';
 import '../../../constants/global_variables.dart';
+typedef void OnDoneCallback();
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+  
   final TextEditingController textEditingController = TextEditingController();
   String currentText = "";
   bool hasError = false;
@@ -92,9 +94,9 @@ class _OTPScreenState extends State<OTPScreen> {
           },
           child: Text("Cancel"),
         ),
-        TextButton(
+       TextButton(
           onPressed: () {
-            if (key.currentState!.validate()) {
+            if (key.currentState != null && key.currentState!.validate()) {
               Get.to(() => const NewPassword());
             }
           },

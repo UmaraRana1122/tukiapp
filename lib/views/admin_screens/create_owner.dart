@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../constants/custom_validators.dart';
 import '../../constants/global_variables.dart';
-import '../../widgets/custom_textfield.dart';
 import '../../widgets/custom_widget.dart';
 import 'widgets/labeled_textfield.dart';
 
@@ -17,6 +16,39 @@ class CreateOwner extends StatefulWidget {
 
 class _CreateOwnerState extends State<CreateOwner> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool loading = false;
+  bool isLoading = false;
+
+  // Controllers for text fields
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _nationalIdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
+  final TextEditingController _licensePlateController = TextEditingController();
+  final TextEditingController _buildingNameController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers when the widget is disposed
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _nationalIdController.dispose();
+    _emailController.dispose();
+    _contactController.dispose();
+    _licensePlateController.dispose();
+    _buildingNameController.dispose();
+    _dobController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +171,9 @@ class _CreateOwnerState extends State<CreateOwner> {
             ),
             for (var field in fields)
               LabeledTextField(
-                heading: field, readOnly: false,
+                heading: field,
+                controller: _getController(field),
+                readOnly: false,
               ),
           ],
         ),
@@ -147,41 +181,68 @@ class _CreateOwnerState extends State<CreateOwner> {
     );
   }
 
-  void _showAlertDialog() {
-  showDialog(
-    context: context,
-    barrierDismissible: false, // Prevent dialog from closing on outside tap
-    builder: (BuildContext context) {
-      // Show the AlertDialog
-      return AlertDialog(
-        content: Container(
-          height: 25.h,
-          child: Column(
-            children: [
-              Image.asset(
-                "assest/images/done.png",
-                height: 10.h,
-              ),
-              Text(
-                textAlign: TextAlign.center,
-                "Owner account created successfully ",
-                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-              ),
-              Text(
-                textAlign: TextAlign.center,
-                "Sign In Credential has been shared with the owner on the Provided Email nelson@gmail.com ",
-                style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
-              )
-            ],
-          ),
-        ),
-      );
-    },
-  );
+  // Helper method to get the appropriate controller for each field
+  TextEditingController _getController(String field) {
+    switch (field) {
+      case "First Name":
+        return _firstNameController;
+      case "Last Name":
+        return _lastNameController;
+      case "National ID No":
+        return _nationalIdController;
+      case "Email":
+        return _emailController;
+      case "Contact No":
+        return _contactController;
+      case "License Plate":
+        return _licensePlateController;
+      case "Building Name":
+        return _buildingNameController;
+      case "Date of Birth":
+        return _dobController;
+      case "Password":
+        return _passwordController;
+      default:
+        return TextEditingController();
+    }
+  }
 
-  // Close the AlertDialog automatically after 4 seconds
-  Future.delayed(Duration(seconds: 4), () {
-    Navigator.of(context).pop();
-  });
-}
+  void _showAlertDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dialog from closing on outside tap
+      builder: (BuildContext context) {
+        // Show the AlertDialog
+        return AlertDialog(
+          content: Container(
+            height: 25.h,
+            child: Column(
+              children: [
+                Image.asset(
+                  "assest/images/done.png",
+                  height: 10.h,
+                ),
+                Text(
+                  textAlign: TextAlign.center,
+                  "Owner account created successfully ",
+                  style:
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  textAlign: TextAlign.center,
+                  "Sign In Credential has been shared with the owner on the Provided Email nelson@gmail.com ",
+                  style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    // Close the AlertDialog automatically after 4 seconds
+    Future.delayed(Duration(seconds: 4), () {
+      Navigator.of(context).pop();
+    });
+  }
 }

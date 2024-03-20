@@ -11,7 +11,7 @@ import '../../../generated/assets.dart';
 import '../../../constants/global_variables.dart';
 
 class EditProfileOwner extends StatefulWidget {
-  const EditProfileOwner({super.key});
+  const EditProfileOwner({Key? key}) : super(key: key);
 
   @override
   State<EditProfileOwner> createState() => _EditProfileOwnerState();
@@ -21,15 +21,22 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
   final ImagePicker _picker = ImagePicker();
   XFile? pickedFile;
 
-  _pickImageFromGallery() async {
-    pickedFile =
-        await _picker.pickImage(imageQuality: 50, source: ImageSource.gallery);
+  Future<void> _pickImageFromGallery() async {
+    pickedFile = await _picker.pickImage(
+      imageQuality: 50,
+      source: ImageSource.gallery,
+    );
     print(pickedFile!.path);
     setState(() {});
   }
 
-  Widget _buildSection(
+Widget _buildSection(
       String title, List<String> fields, List<String> hintList) {
+    List<TextEditingController> controllers = List.generate(
+      fields.length,
+      (index) => TextEditingController(),
+    );
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -77,11 +84,12 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
               ),
             ),
             // Add a widget to display the picked image
-
             for (int i = 0; i < fields.length; i++)
               LabeledTextField(
                 heading: fields[i],
-                hintText: hintList.length > i ? hintList[i] : '', readOnly: false,
+                hintText: hintList.length > i ? hintList[i] : '',
+                controller: controllers[i], // Add controller argument
+                readOnly: false,
               ),
           ],
         ),
@@ -89,16 +97,18 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_outlined),
-            onPressed: () {
-              Get.back();
-            }),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: const Text('My Profile'),
       ),
       body: SingleChildScrollView(
@@ -119,8 +129,7 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
                           ? ClipOval(
                               child: Image.file(
                                 File(pickedFile!.path),
-                                fit: BoxFit
-                                    .fill, // Use BoxFit.fill to fill the entire container
+                                fit: BoxFit.fill,
                               ),
                             )
                           : Image.asset(
@@ -137,20 +146,24 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
                 ),
               ),
             ),
-            _buildSection("Personal Details", [
-              "First Name",
-              "Last Name",
-              "National ID No",
-              "Email",
-              "Contact No",
-              "Date of Birth",
-            ], [
-              "Enter your first name",
-              "Enter your last name",
-              "Enter your national ID number",
-              "Enter your email",
-              "Enter your contact number",
-            ]),
+            _buildSection(
+              "Personal Details",
+              [
+                "First Name",
+                "Last Name",
+                "National ID No",
+                "Email",
+                "Contact No",
+                "Date of Birth",
+              ],
+              [
+                "Enter your first name",
+                "Enter your last name",
+                "Enter your national ID number",
+                "Enter your email",
+                "Enter your contact number",
+              ],
+            ),
             SizedBox(
               height: 2.h,
             ),
@@ -162,13 +175,16 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
                 height: 5.h,
                 width: 90.w,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12)),
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Align(
                   child: Text(
                     "Save all changes",
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),

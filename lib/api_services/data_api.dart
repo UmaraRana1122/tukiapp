@@ -30,8 +30,8 @@ class DataApiService {
     var uri = Uri.parse(BASE_URL + api);
     try {
       http.Response response = await http.get(uri, headers: {
-        "Authorization":
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGFjZTNhOC1mMTljLTRkOTktYjgyMC0zMWFjNjEwYWUzMjYiLCJzY3AiOiJhcGlfdjFfdXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNzA4NzIyNTQwLCJleHAiOjE3MDkzMjczNDAsImp0aSI6IjkwZWRjY2IwLWY1NzEtNGMwMi1iODUzLWU5ZmQzM2EyZjdhNiJ9.bi7NxU-DTD3Vu3BYOE-HdZuNfy_6LdLxJlw1UGqpkdI"
+        'Cookie':
+            'auth_session=PBSVxW%2B5zYKY6Rl2dvLQRp3eU%2F6oaoylmcGocc7nSKE1ENXgDIhOEzUwqVO3bvPGZewnr2dPSq6wdVbmQ4ucjRanz32zytqAoNNIHUsPmCOxlifC6XrBrdrHxCA426CXEnyhda%2BZAfFJHOCDU9yzS9B3020twp2RZslgEWZ7rOcYgvnD%2BNRXIUcewSUopeiou%2BxD3bAhqnyU9na8kw6758uLE1U%2Bz1nx3dJUXffXsfKrQnQsJj4vcHHqcCayVVTfPL2%2Fe96grpKWi0AjPoKFy5XVXNHxyk1us%2Bx%2Bz%2BX%2BP3PME6V6ppqpwx%2FhFkTtQ%2Fn2qRhY%2Bnq1rodEIKkutx7c%2Fj7H2lMhIBSX4yoMG5h8QUQ%3D--ZmsnBqdaKP4fPz6y--GkfSbW5NcCxFryRvlooRhA%3D%3D'
       }).timeout(const Duration(seconds: TIME_OUT_DURATION));
       // return response;
       return _processResponse(response);

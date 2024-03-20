@@ -316,7 +316,7 @@ class _NelsonCoState extends State<NelsonCo> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard.events[0].endDate)}",
+                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard!.events[0].endDate)}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.red[700]),
                                 ),
@@ -336,7 +336,7 @@ class _NelsonCoState extends State<NelsonCo> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${"Time: ${_adminController.adminDashBoard.events[0].startTime}"} to ${_adminController.adminDashBoard.events[0].endTime}",
+                                  "${"Time: ${_adminController.adminDashBoard?.events[0].startTime}"} to ${_adminController.adminDashBoard?.events[0].endTime}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),

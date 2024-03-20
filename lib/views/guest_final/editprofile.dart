@@ -23,6 +23,13 @@ class _EditProfileGuardState extends State<EditProfileGuard> {
   bool isLoading = false;
   ViewModel? user;
 
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController nationalIdController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController contactNoController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+
   @override
   void initState() {
     getUserData();
@@ -33,32 +40,7 @@ class _EditProfileGuardState extends State<EditProfileGuard> {
     setState(() {
       isLoading = true;
     });
-    var headers = {
-      'Authorization': 'Bearer {{token}}',
-      'Cookie':
-          'auth_session=4cc3uvvoX4ljo4DfnGxfRxuVTGpPm95GizPDMt%2Fk5N5Uu2niaO2Om6EH4ie0DRBH07hSBr01ekoxS9LEJgMVW09MU3oOXNJCllWkextLGMoaLIpI2eeLGki5ZXz77ro0X%2BQrXj%2BhgpQ5xVvCg3z18Lh55V2uPSJOS8x610Kg3%2BeZyhabMj9mxz8j0BIXzmWYbIWVPTxw1OAS1d0%2B7O%2FewPexMsODEosH0hTWqTXSOrqRwGhU9eOp%2BtxtBrR%2F7R4JLBYCV4m148gMaZT%2BvmZ0yYqdegtCjNm1oSHMjgAS9a1XObtqsJLKMIdpbkNmW5TgkCVbvaXabLPkByOiYSOVGpDatX%2FIF84qNHKRCCpD0Jw%3D--O94zqABSDdidAeYg--O8y%2B3u20Uumyvp65IUNAww%3D%3D'
-    };
-
-    var uri =
-        Uri.parse('https://tuki-api-0398bb6381b8.herokuapp.com/api/v1/user');
-    var request = http.Request('GET', uri);
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      final jsonResponse = await utf8.decodeStream(response.stream);
-      final Map<String, dynamic> userData = json.decode(jsonResponse)['user'];
-      user = ViewModel.fromJson(userData);
-
-      print('User Data: $user');
-    } else {
-      print(response.reasonPhrase);
-    }
-
-    setState(() {
-      isLoading = false;
-    });
+    // Your existing code...
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -153,13 +135,14 @@ class _EditProfileGuardState extends State<EditProfileGuard> {
 
                     if (pickedDate != null) {
                       print("Selected Date: $pickedDate");
-                      // Here you can update the UI or save the selected date
+                      dobController.text = pickedDate.toString();
                     }
                   },
                   child: LabeledTextField(
                     heading: fields[i],
                     hintText: hintList.length > i ? hintList[i] : '',
                     readOnly: true,
+                    controller: dobController,
                   ),
                 )
               else
@@ -167,11 +150,29 @@ class _EditProfileGuardState extends State<EditProfileGuard> {
                   heading: fields[i],
                   hintText: hintList.length > i ? hintList[i] : '',
                   readOnly: false, // Set readOnly to false for other fields
+                  controller: _getControllerForField(fields[i]),
                 ),
           ],
         ),
       ),
     );
+  }
+
+  TextEditingController _getControllerForField(String fieldName) {
+    switch (fieldName) {
+      case "First Name":
+        return firstNameController;
+      case "Last Name":
+        return lastNameController;
+      case "National ID No":
+        return nationalIdController;
+      case "Email":
+        return emailController;
+      case "Contact No":
+        return contactNoController;
+      default:
+        return TextEditingController();
+    }
   }
 
   @override
@@ -262,3 +263,4 @@ class _EditProfileGuardState extends State<EditProfileGuard> {
     );
   }
 }
+

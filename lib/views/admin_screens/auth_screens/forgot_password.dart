@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../../constants/global_variables.dart';
 
+import '../../../constants/global_variables.dart';
 import '../../../constants/custom_validators.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../widgets/custom_textfield.dart';
@@ -19,10 +21,7 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController emailEditingController = TextEditingController();
   final GlobalKey<FormState> key = GlobalKey<FormState>();
-  final TextEditingController passwordEditingController = TextEditingController();
-
   final AuthController _authController = Get.find<AuthController>();
-  final bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     alignment: Alignment.center,
                     child: Text(
                       "Enter Your Email",
-                      style: bodyLarge.copyWith(fontWeight: FontWeight.bold, fontSize: 3.h),
+                      style: bodyLarge.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 3.h),
                     ),
                   ),
                   SizedBox(
@@ -50,7 +50,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "We Will sent you a 4 Digit verification OTP code on your email",
+                      "We will send you a 4-digit verification OTP code on your email.",
                       style: bodyLarge.copyWith(color: Colors.black),
                     ),
                   ),
@@ -63,7 +63,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       controller: emailEditingController,
                       validator: (value) => CustomValidator.email(value),
                       hintText: "Enter Your Email",
-                      // prefixIcon: AppImages.emailIcon,
                     ),
                   ),
                   Padding(
@@ -71,7 +70,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     child: CustomButton(
                       buttonText: "Done",
                       onTap: () {
-                        Get.to(() =>  OTPScreen());
+                        if (key.currentState!.validate()) {
+                          // Generate OTP
+                          String otp = _generateOTP();
+
+                          // Send OTP via email
+                          _sendOTPByEmail(emailEditingController.text, otp);
+
+                          // Navigate to the OTPScreen
+                          Get.to(() => OTPScreen());
+                        }
                       },
                     ),
                   ),
@@ -82,5 +90,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       ),
     );
+  }
+
+  // Generate a random 4-digit OTP
+  String _generateOTP() {
+    var random = new Random();
+    return (1000 + random.nextInt(9000)).toString();
+  }
+
+  void _sendOTPByEmail(String email, String otp) {
+    print("Sending OTP to $email: $otp");
   }
 }

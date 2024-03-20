@@ -170,7 +170,7 @@ class _GuestDashboardState extends State<GuestDashboard> {
                                     ),
                                     child: Center(
                                         child: Text(
-                                      _adminController.adminDashBoard.owners
+                                      _adminController.adminDashBoard!.owners
                                               .toString(), // Use null check operator and provide a default value
                                     )),
                                   ),
@@ -212,7 +212,7 @@ class _GuestDashboardState extends State<GuestDashboard> {
                                     ),
                                     child: Center(
                                         child: Text(
-                                      _adminController.adminDashBoard.bookings
+                                      _adminController.adminDashBoard!.bookings
                                               .toString() ??
                                           '0', // Use null check operator and provide a default value
                                     )),

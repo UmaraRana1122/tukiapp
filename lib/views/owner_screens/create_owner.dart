@@ -18,6 +18,17 @@ class CreateCoOwner extends StatefulWidget {
 class _CreateCoOwnerState extends State<CreateCoOwner> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController nationalIdController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController contactNoController = TextEditingController();
+  TextEditingController licensePlateController = TextEditingController();
+  TextEditingController buildingNameController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController coOwnerEmailController = TextEditingController();
+  TextEditingController coOwnerPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,12 +150,41 @@ class _CreateCoOwnerState extends State<CreateCoOwner> {
             ),
             for (var field in fields)
               LabeledTextField(
-                heading: field, readOnly: false,
+                heading: field,
+                readOnly: false,
+                controller: _getControllerForField(field),
               ),
           ],
         ),
       ),
     );
+  }
+
+  TextEditingController _getControllerForField(String fieldName) {
+    switch (fieldName) {
+      case "First Name":
+        return firstNameController;
+      case "Last Name":
+        return lastNameController;
+      case "National ID No":
+        return nationalIdController;
+      case "Email":
+        return emailController;
+      case "Contact No":
+        return contactNoController;
+      case "License Plate":
+        return licensePlateController;
+      case "Building Name":
+        return buildingNameController;
+      case "Date of Birth":
+        return dobController;
+      case "Credentials":
+        return coOwnerEmailController;
+      case "Password":
+        return coOwnerPasswordController;
+      default:
+        return TextEditingController();
+    }
   }
 
   void _showAlertDialog() {

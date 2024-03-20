@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -28,7 +26,7 @@ import 'guard_listing.dart';
 import 'owners_listing.dart';
 
 class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+  const AdminDashboard({Key? key}) : super(key: key);
 
   @override
   State<AdminDashboard> createState() => _AdminDashboardState();
@@ -51,11 +49,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
     setState(() {
       isLoading = true;
     });
+
     var headers = {
-      'Authorization': 'Bearer <token>',
+      'Authorization': 'Bearer {{token}}',
       'Cookie':
-          'auth_session=LFA48xs%2FwP90pZlqS8llJlNZdYlTgzbDf4wZh1CRAnU7xDulQE0I7Y%2F1p94jzQskJvBqzCS8Mi5%2B%2BePCLEraZVt94BmS2ta3wLwKM%2B99YTSYZsyxiqV5HfrNDC5mXrzZKqdWANwZqBP4uaahXF1HusjhXZXWfUBZhhsQTNbqr4%2BPRdkFS7TG2yKZzbEOf1nuf0cHfuG%2F%2FeePr04dp5NU%2FXePcR6lSp1Ie5PLhgtEIciqvcQ4ZnS%2Bim9u99wzT6rG1dF0eKNr5BgbN13bjho1CmxGW2YauBe8V2NRURbRd16pjnpJDMiihAh3MpvRBxkXClKxbcu3eHwormUVcL0CTfZnhwrSXU5dS2DSXtShUsA%3D--NeouxQ1dNjsFZrnP--qZguQcAef1e85tccnM0Rag%3D%3D'
+          'auth_session=PBSVxW%2B5zYKY6Rl2dvLQRp3eU%2F6oaoylmcGocc7nSKE1ENXgDIhOEzUwqVO3bvPGZewnr2dPSq6wdVbmQ4ucjRanz32zytqAoNNIHUsPmCOxlifC6XrBrdrHxCA426CXEnyhda%2BZAfFJHOCDU9yzS9B3020twp2RZslgEWZ7rOcYgvnD%2BNRXIUcewSUopeiou%2BxD3bAhqnyU9na8kw6758uLE1U%2Bz1nx3dJUXffXsfKrQnQsJj4vcHHqcCayVVTfPL2%2Fe96grpKWi0AjPoKFy5XVXNHxyk1us%2Bx%2Bz%2BX%2BP3PME6V6ppqpwx%2FhFkTtQ%2Fn2qRhY%2Bnq1rodEIKkutx7c%2Fj7H2lMhIBSX4yoMG5h8QUQ%3D--ZmsnBqdaKP4fPz6y--GkfSbW5NcCxFryRvlooRhA%3D%3D'
     };
+
     var request = http.Request(
         'GET',
         Uri.parse(
@@ -67,12 +67,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     if (response.statusCode == 200) {
       final jsonResponse = await utf8.decodeStream(response.stream);
-      final Map<String, dynamic> userData = json.decode(jsonResponse)['user'];
-      user = ViewModel.fromJson(userData);
-
-      print('User Data: $user');
+      print(
+          'API Response: $jsonResponse'); // Print the entire API response for debugging
+      final Map<String, dynamic>? userData = json.decode(jsonResponse)['user'];
+      if (userData != null) {
+        user = ViewModel.fromJson(userData);
+        print('User Data: $user');
+      } else {
+        print('User data is null');
+      }
     } else {
-      print(response.reasonPhrase);
+      print(
+          'HTTP Error: ${response.statusCode}, Reason: ${response.reasonPhrase}');
     }
 
     setState(() {
@@ -95,7 +101,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           icon: const Icon(
             Icons.menu,
             color: Colors.black,
-          ), // You can use any other icon you prefer
+          ),
           onPressed: () {
             _key.currentState!.openDrawer();
           },
@@ -164,22 +170,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ],
         ),
       ),
-      
-      body: loading
+      body: isLoading
           ? const Center(
               child: CircularProgressIndicator(
               color: AppColors.primaryColor,
             ))
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
                     SizedBox(
                       height: 1.h,
                     ),
-                      // ignore: unrelated_type_equality_checks
-                      if (_adminController.adminDashBoard != true)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -204,20 +207,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                   height: 10.w,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Replace with your desired color
+                                    color: Colors.white,
                                   ),
                                   child: Center(
-                                      child: Text(_adminController
-                                          .adminDashBoard!.owners
-                                          .toString())),
+                                    child: Text(
+                                      _adminController.adminDashBoard?.owners
+                                              ?.toString() ??
+                                          '',
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   child: Center(
-                                      child: Text(
-                                    "Owners",
-                                    style: bodySmall,
-                                  )),
+                                    child: Text(
+                                      "Owners",
+                                      style: bodySmall,
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
@@ -244,17 +250,17 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                   height: 10.w,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Replace with your desired color
+                                    color: Colors.white,
                                   ),
                                   child: const Center(child: Text("0")),
                                 ),
                                 Container(
                                   child: Center(
-                                      child: Text(
-                                    "Guards",
-                                    style: bodySmall,
-                                  )),
+                                    child: Text(
+                                      "Guards",
+                                      style: bodySmall,
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
@@ -281,20 +287,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                   height: 10.w,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors
-                                        .white, // Replace with your desired color
+                                    color: Colors.white,
                                   ),
                                   child: Center(
-                                      child: Text(_adminController
-                                          .adminDashBoard!.bookings
-                                          .toString())),
+                                    child: Text(
+                                      _adminController.adminDashBoard?.bookings
+                                              ?.toString() ??
+                                          '',
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   child: Center(
-                                      child: Text(
-                                    "Bookings",
-                                    style: bodySmall,
-                                  )),
+                                    child: Text(
+                                      "Bookings",
+                                      style: bodySmall,
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
@@ -330,10 +339,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                               child: Center(
-                                  child: Text(
-                                "View All",
-                                style: bodyNormal,
-                              )),
+                                child: Text(
+                                  "View All",
+                                  style: bodyNormal,
+                                ),
+                              ),
                             ),
                           )
                         ],
@@ -350,10 +360,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         borderRadius: BorderRadius.circular(5.0),
                         boxShadow: [
                           BoxShadow(
-                            color:
-                                Colors.black.withOpacity(0.1), // Shadow color
+                            color: Colors.black.withOpacity(0.1),
                             spreadRadius: 5,
-                            blurRadius: 10, // Offset of the shadow
+                            blurRadius: 10,
                           ),
                         ],
                       ),
@@ -387,8 +396,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           Padding(
                             padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
-                              _adminController.adminDashBoard!.events[0].name
-                                  .toString(),
+                              _adminController.adminDashBoard?.events[0].name ??
+                                  '',
                               style: bodyNormal.copyWith(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -403,13 +412,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${_adminController.adminDashBoard!.events[0].seats} Seats Available",
+                                  "${_adminController.adminDashBoard?.events[0].seats} Seats Available",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "\$${_adminController.adminDashBoard!.events[0].ticket.price}",
+                                  "\$${_adminController.adminDashBoard?.events[0].ticket.price}",
                                   style: bodyNormal.copyWith(
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -431,9 +441,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                 SizedBox(
                                   width: 80.w,
                                   child: Text(
-                                    _adminController
-                                        .adminDashBoard!.events[0].description
-                                        .toString(),
+                                    _adminController.adminDashBoard?.events[0]
+                                            .description ??
+                                        '',
                                     maxLines: 1,
                                     style: bodyNormal.copyWith(
                                         color: Colors.grey[700]),
@@ -456,12 +466,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Created :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard!.events[0].startDate)}",
+                                  "Created :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard?.events[0].startDate ?? DateTime.now())}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard!.events[0].endDate)}",
+                                  "Expired :${DateFormat("dd-MM-yyyy").format(_adminController.adminDashBoard?.events[0].endDate ?? DateTime.now())}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.red[700]),
                                 ),
@@ -482,7 +492,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${"Time: ${_adminController.adminDashBoard!.events[0].startTime}"} to ${_adminController.adminDashBoard!.events[0].endTime}",
+                                  "${"Time: ${_adminController.adminDashBoard?.events[0].startTime}"} to ${_adminController.adminDashBoard?.events[0].endTime ?? ''}",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
@@ -495,25 +505,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     SizedBox(
                       height: 4.h,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     TextButton(
-                    //       onPressed: () {},
-                    //       child: Text(
-                    //         "<-Previous",
-                    //         style: bodyNormal,
-                    //       ),
-                    //     ),
-                    //     TextButton(
-                    //       onPressed: () {},
-                    //       child: Text(
-                    //         "Next->",
-                    //         style: bodyNormal,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
@@ -526,7 +517,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           width: 90.w,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Colors.blue, // Border width
+                              color: Colors.blue,
                             ),
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -555,7 +546,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           decoration: BoxDecoration(
                             color: const Color(0xff57009b26),
                             border: Border.all(
-                              color: const Color(0xffc7c6c6ff), // Border width
+                              color: const Color(0xffc7c6c6ff),
                             ),
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -602,7 +593,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           decoration: BoxDecoration(
                             color: const Color(0xfffaf5cc),
                             border: Border.all(
-                              color: const Color(0xffc7c6c6ff), // Border width
+                              color: const Color(0xffc7c6c6ff),
                             ),
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -648,7 +639,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           decoration: BoxDecoration(
                             color: const Color(0xffa5b2ec),
                             border: Border.all(
-                              color: const Color(0xffc7c6c6ff), // Border width
+                              color: const Color(0xffc7c6c6ff),
                             ),
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -694,7 +685,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           decoration: BoxDecoration(
                             color: const Color(0xffe8f3f5),
                             border: Border.all(
-                              color: const Color(0xffc7c6c6ff), // Border width
+                              color: const Color(0xffc7c6c6ff),
                             ),
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -735,4 +726,3 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 }
-
