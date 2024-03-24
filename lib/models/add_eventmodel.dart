@@ -10,22 +10,22 @@ AddEventModel addEventModelFromJson(String str) =>
 String addEventModelToJson(AddEventModel data) => json.encode(data.toJson());
 
 class AddEventModel {
-  final Event? event;
+  final AddEvent? add;
 
   AddEventModel({
-    this.event,
+    this.add,
   });
 
   factory AddEventModel.fromJson(Map<String, dynamic> json) => AddEventModel(
-        event: json["event"] == null ? null : Event.fromJson(json["event"]),
+        add: json["add"] == null ? null : AddEvent.fromJson(json["add"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "event": event?.toJson(),
+        "add": add?.toJson(),
       };
 }
 
-class Event {
+class AddEvent {
   final String? id;
   final String? eventType;
   final String? name;
@@ -36,7 +36,7 @@ class Event {
   final dynamic banner;
   final List<dynamic>? timeSlots;
 
-  Event({
+  AddEvent({
     this.id,
     this.eventType,
     this.name,
@@ -48,7 +48,7 @@ class Event {
     this.timeSlots,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
+  factory AddEvent.fromJson(Map<String, dynamic> json) => AddEvent(
         id: json["id"],
         eventType: json["event_type"],
         name: json["name"],

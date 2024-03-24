@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/create_event.dart';
 import 'package:tukiapp/views/admin_screens/settings.dart';
+import 'package:tukiapp/views/guards_screens/tennis_detail.dart';
 import 'package:tukiapp/widgets/custom_widget.dart';
 
 File? _selectedAttachment;
@@ -64,7 +64,9 @@ Widget content5(BuildContext context) {
                       "E",
                     ],
                     hint: '  Select',
-                    onChanged: (String) {},
+                    onChanged: (String? value) {
+                      // Handle the selected value
+                    },
                   ),
                 ),
                 SizedBox(height: 1.h),
@@ -176,4 +178,55 @@ void _showAlertSent(BuildContext context) {
       );
     },
   );
+}
+Widget labeledWidget(heading, child) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      left: 0,
+      right: 0,
+      bottom: 10.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          heading,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 5),
+        child,
+      ],
+    ),
+  );
+}
+
+class CustomDropdown extends StatelessWidget {
+  final List<String> options;
+  final String? hint;
+  final void Function(String?)? onChanged;
+
+  const CustomDropdown({
+    required this.options,
+    this.hint,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: null,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hint,
+      ),
+      items: options.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
 }

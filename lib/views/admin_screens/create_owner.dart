@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
-
-import '../../constants/custom_validators.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:tukiapp/models/owner_model.dart';
 import '../../constants/global_variables.dart';
 import '../../widgets/custom_widget.dart';
 import 'widgets/labeled_textfield.dart';
@@ -18,8 +21,8 @@ class _CreateOwnerState extends State<CreateOwner> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool loading = false;
   bool isLoading = false;
+  OwnerModel? own;
 
-  // Controllers for text fields
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _nationalIdController = TextEditingController();
@@ -30,25 +33,96 @@ class _CreateOwnerState extends State<CreateOwner> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> postUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    var headers = {
+      'Authorization': 'postUserData()',
+      'Cookie':
+          'auth_session=wt1iyQmOgYArGSFxlxDvsdkPbLvFBGRRmT7H4NRG2CcMTO58AtfyKrbWCPqNXiBTlIof8sFIyry%2FCQEd%2F0I89qW6aH%2FEEvtmZnYhYvz1y2dMVufH5L7UlOouScs8XrN9eLbsIGDVBL6T9vcMzoV2Rv%2FUolnlNU%2FUf03NzMfPvET%2FFehoLEFV4CNC4t1YtkL1p0uF27zn%2BPNV3ZqfkRtgHTpsqYJ%2BFtkJRaUEVp7nt19Vt%2FTq48rRzPCdwKuCHUS4KrOraBji%2FNtU%2FfatvKpao%2FWtQLb0jNEUN6J4pgpbA12DwMYWPvQLQirIsUdvAWUDJ%2BRj86IsDL9LYIAA36VHc9R270cmHJwCdl7piEpK6Ts%3D--8nk1%2BLxu2izCgVz3--7tx3HhbPu4%2F%2FZBBvncNjLw%3D%3D'
+    };
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://tuki-api-0398bb6381b8.herokuapp.com/api/v1/owners'),
+    );
+    request.fields.addAll({
+      'owner[first_name]': _firstNameController.text,
+      'owner[last_name]': _lastNameController.text,
+      'owner[national_id]': _nationalIdController.text,
+      'owner[contact]': _contactController.text,
+      'owner[birthdate]': _dobController.text,
+      'owner[email]': _emailController.text,
+      'owner[password]': _passwordController.text,
+      'apartment[number]': '40',
+      'apartment[license_plate]': _licensePlateController.text,
+      'owner[password_confirmation]': _passwordController.text,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      _showSuccessDialog();
+    } else {
+      print(response.reasonPhrase);
+      _showErrorSnackbar(response.reasonPhrase);
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
-  @override
-  void dispose() {
-    // Dispose controllers when the widget is disposed
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _nationalIdController.dispose();
-    _emailController.dispose();
-    _contactController.dispose();
-    _licensePlateController.dispose();
-    _buildingNameController.dispose();
-    _dobController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            height: 25.h,
+            child: Column(
+              children: [
+                Image.asset(
+                  "assest/images/done.png",
+                  height: 10.h,
+                ),
+                Text(
+                  "Owner account created successfully",
+                  textAlign: TextAlign.center,
+                  style:
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  "Sign In Credential has been shared with the owner on the Provided Email nelson@gmail.com",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    Future.delayed(Duration(seconds: 4), () {
+      Navigator.of(context).pop();
+    });
   }
+
+ void _showErrorSnackbar(String? message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message ?? "Unknown error occurred"),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +152,7 @@ class _CreateOwnerState extends State<CreateOwner> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader("Create Owner", "Upload CSV"),
+            _buildHeader("Create Owner", "Upload CSV", _openFileExplorer),
             _buildSection("Personal Details", [
               "First Name",
               "Last Name",
@@ -96,9 +170,7 @@ class _CreateOwnerState extends State<CreateOwner> {
               padding: const EdgeInsets.all(16),
               child: CustomButton(
                 buttonText: "Done",
-                onTap: () {
-                  _showAlertDialog();
-                },
+                onTap: postUserData,
               ),
             ),
           ],
@@ -106,8 +178,7 @@ class _CreateOwnerState extends State<CreateOwner> {
       ),
     );
   }
-
-  Widget _buildHeader(String title, String action) {
+   Widget _buildHeader(String title, String action, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -117,24 +188,9 @@ class _CreateOwnerState extends State<CreateOwner> {
             title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: AppColors.buttonColor),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Row(
-                children: [
-                  const Icon(Icons.upload, color: AppColors.buttonColor),
-                  const SizedBox(width: 5),
-                  Text(
-                    action,
-                    style: const TextStyle(color: AppColors.buttonColor),
-                  ),
-                ],
-              ),
-            ),
+          ElevatedButton(
+            onPressed: onPressed,
+            child: Text(action),
           ),
         ],
       ),
@@ -181,7 +237,6 @@ class _CreateOwnerState extends State<CreateOwner> {
     );
   }
 
-  // Helper method to get the appropriate controller for each field
   TextEditingController _getController(String field) {
     switch (field) {
       case "First Name":
@@ -207,42 +262,19 @@ class _CreateOwnerState extends State<CreateOwner> {
     }
   }
 
-  void _showAlertDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Prevent dialog from closing on outside tap
-      builder: (BuildContext context) {
-        // Show the AlertDialog
-        return AlertDialog(
-          content: Container(
-            height: 25.h,
-            child: Column(
-              children: [
-                Image.asset(
-                  "assest/images/done.png",
-                  height: 10.h,
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Owner account created successfully ",
-                  style:
-                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Sign In Credential has been shared with the owner on the Provided Email nelson@gmail.com ",
-                  style: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+  void _openFileExplorer() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
     );
 
-    // Close the AlertDialog automatically after 4 seconds
-    Future.delayed(Duration(seconds: 4), () {
-      Navigator.of(context).pop();
-    });
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      _processCSVFile(file);
+    } else {}
+  }
+
+  void _processCSVFile(File file) {
+    print("Selected CSV file path: ${file.path}");
   }
 }

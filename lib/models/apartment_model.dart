@@ -5,20 +5,20 @@
 import 'dart:convert';
 
 
-class Apartment {
+class ApartmentModel {
   final String? id;
   final String? number;
   final String? licensePlate;
   final Community? community;
 
-  Apartment({
+  ApartmentModel({
     this.id,
     this.number,
     this.licensePlate,
     this.community,
   });
 
-  factory Apartment.fromJson(Map<String, dynamic> json) => Apartment(
+  factory ApartmentModel.fromJson(Map<String, dynamic> json) => ApartmentModel(
         id: json["id"],
         number: json["number"],
         licensePlate: json["license_plate"],

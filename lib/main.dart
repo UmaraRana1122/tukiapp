@@ -25,6 +25,7 @@ import 'package:tukiapp/views/guards_screens/guard_login.dart';
 import 'package:tukiapp/views/guards_screens/guard_report.dart';
 import 'package:tukiapp/views/guards_screens/main_board.dart';
 import 'package:tukiapp/views/guards_screens/tennis_detail.dart';
+import 'package:tukiapp/views/guards_screens/upcoming_event.dart';
 import 'package:tukiapp/views/guards_screens/validate_person.dart';
 import 'package:tukiapp/views/guards_screens/validate_person_details.dart';
 import 'package:tukiapp/views/guards_screens/working_guest.dart';
@@ -85,7 +86,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const AdminDashboard(
+        home: CreateEvent(
             // eventData: null,
             ),
       );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/models/apartment_model.dart';
+import 'package:tukiapp/models/owner_model.dart';
 import 'tenant_details.dart';
 
 import '../../constants/custom_navigation.dart';
@@ -11,7 +12,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class OwnerDetails extends StatefulWidget {
-  const OwnerDetails({Key? key}) : super(key: key);
+  final OwnerModel? owner;
+
+  const OwnerDetails({Key? key, this.owner}) : super(key: key);
 
   @override
   State<OwnerDetails> createState() => _OwnerDetailsState();
@@ -20,7 +23,7 @@ class OwnerDetails extends StatefulWidget {
 class _OwnerDetailsState extends State<OwnerDetails> {
   bool loading = false;
   bool isLoading = false;
-  Apartment? apartment;
+  ApartmentModel? apartment;
 
   @override
   void initState() {
@@ -55,7 +58,7 @@ class _OwnerDetailsState extends State<OwnerDetails> {
       var decodedResponse = jsonDecode(jsonResponse);
 
       // Parse the decoded response into ApartmentModel
-      apartment = Apartment.fromJson(decodedResponse);
+      apartment = ApartmentModel.fromJson(decodedResponse);
 
       // Now you have the apartment data in the 'apartment' variable
       print('Apartment ID: ${apartment!.id}');
@@ -126,19 +129,24 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                             SizedBox(
                               width: 3.w,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Nelson Aston',
-                                  style: bodyNormal,
-                                ),
-                                Text(
-                                  'nelson@gmail.com',
-                                  style: hintText,
-                                ),
-                              ],
-                            ),
+                            if (widget.owner != null)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Name: ${widget.owner!.account?.firstName ?? ''} ${widget.owner!.account?.lastName ?? ''}',
+                                    style: bodyNormal,
+                                  ),
+                                  Text(
+                                    'Email: ${widget.owner!.account?.email ?? ''}',
+                                    style: hintText,
+                                  ),
+                                ],
+                              )
+                            else
+                              Center(
+                                child: Text('No owner details available'),
+                              ),
                           ],
                         ),
                         PopupMenuButton<String>(
@@ -202,7 +210,7 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                 ),
                                 Text(
                                   apartment != null
-                                      ? apartment!.community!.id.toString()
+                                      ? apartment!.licensePlate ?? 'N/A'
                                       : 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
@@ -223,8 +231,8 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                 ),
                                 Text(
                                   apartment != null
-                                      ? apartment!.community!.name.toString()
-                                      : 'Test Community',
+                                      ? apartment!.community?.name ?? 'N/A'
+                                      : 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -235,13 +243,14 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Date of  Birth:",
+                                  "Date of Birth:",
                                   style: bodyNormal.copyWith(
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  apartment != null
-                                      ? apartment!.community!.id.toString()
+                                  widget.owner?.account?.birthdate != null
+                                      ? widget.owner!.account!.birthdate!
+                                          .toString()
                                       : 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
@@ -258,7 +267,7 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "1111111111",
+                                  widget.owner?.account?.nationalId ?? 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -274,7 +283,7 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       color: Colors.grey[700]),
                                 ),
                                 Text(
-                                  "+3086756445",
+                                  widget.owner?.account?.contact ?? 'N/A',
                                   style: bodyNormal.copyWith(
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -303,21 +312,21 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                       itemCount: 5,
                       itemBuilder: (c, i) {
                         return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            height: 18.h,
-                            width: 90.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xffF2F9FF),
-                              border: Border.all(
-                                color: const Color(0xffc6c6ff), // Border width
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              height: 18.h,
+                              width: 90.w,
+                              decoration: BoxDecoration(
+                                color: const Color(0xffF2F9FF),
+                                border: Border.all(
+                                  color:
+                                      const Color(0xffc6c6ff), // Border width
+                                ),
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(children: [
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -410,11 +419,9 @@ class _OwnerDetailsState extends State<OwnerDetails> {
                                       ),
                                     ],
                                   ),
-                                ],
+                                ]),
                               ),
-                            ),
-                          ),
-                        );
+                            ));
                       },
                     ),
                   ),

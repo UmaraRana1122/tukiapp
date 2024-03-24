@@ -538,7 +538,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       child: InkWell(
                         onTap: () {
                           PageTransition.pageNavigation(
-                              page: const CreateOwner());
+                              page:  CreateOwner());
                         },
                         child: Container(
                           height: 5.h,

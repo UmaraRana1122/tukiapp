@@ -1,27 +1,6 @@
 import 'dart:convert';
 
-CreateOwnerModel createOwnerModelFromJson(String str) =>
-    CreateOwnerModel.fromJson(json.decode(str));
 
-String createOwnerModelToJson(CreateOwnerModel data) =>
-    json.encode(data.toJson());
-
-class CreateOwnerModel {
-  final Owner? owner;
-
-  CreateOwnerModel({
-    this.owner,
-  });
-
-  factory CreateOwnerModel.fromJson(Map<String, dynamic> json) =>
-      CreateOwnerModel(
-        owner: json["owner"] == null ? null : Owner.fromJson(json["owner"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "owner": owner?.toJson(),
-      };
-}
 
 class Owner {
   final String? id;
@@ -35,7 +14,7 @@ class Owner {
     this.account,
     this.eliminatedAccount,
     this.apartment,
-    this.ownership,
+    this.ownership, required String firstName,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
@@ -46,8 +25,10 @@ class Owner {
         apartment: json["apartment"] == null
             ? null
             : Apartment.fromJson(json["apartment"]),
-        ownership: json["ownership"],
+        ownership: json["ownership"], firstName: '',
       );
+
+  get email => null;
 
   Map<String, dynamic> toJson() => {
         "id": id,

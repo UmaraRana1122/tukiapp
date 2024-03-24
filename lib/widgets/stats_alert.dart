@@ -7,8 +7,9 @@ void alertPOP9(context) {
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
         backgroundColor: Colors.white,
         child: content9(context),
       );
@@ -34,264 +35,21 @@ Widget content9(BuildContext context) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Stats",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15.sp,
-                  ),
-                ),
+                _buildTitle("Stats"),
                 SizedBox(height: 1.h),
-                Row(
-                  children: [
-                    Text(
-                      "Progress in Percentage",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      "60/100",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                LinearProgressBar(
-                  maxSteps: 100,
-                  progressType: LinearProgressBar.progressTypeLinear,
-                  currentStep: 60,
-                  progressColor: Colors.blue,
-                  backgroundColor: Colors.grey,
-                  minHeight: 10,
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Text(
-                  "Occupation: 60%",
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.sp,
-                  ),
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Container(
-                  height: 6.h,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: Color(0xffd1f0ff),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Total Validated Attendees",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 12.w), // Add some spacing
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              enabled: true,
-                              border: InputBorder.none,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              hintText: '60/100',
-                              hintStyle: TextStyle(
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                              color: Color(0xff4B5768),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Container(
-                  height: 6.h,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: Color(0xffd1f0ff),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Checked In Attendees",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Spacer(),
-                        // Add some spacing
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              enabled: true,
-                              border: InputBorder.none,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              hintText: '    60',
-                              hintStyle: TextStyle(
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                              color: Color(0xff4B5768),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Container(
-                  height: 6.h,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: Color(0xffd1f0ff),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Checked Out Attendees",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Spacer(),
-// Add some spacing
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              enabled: true,
-                              border: InputBorder.none,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              hintText: '    00',
-                              hintStyle: TextStyle(
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                              color: Color(0xff4B5768),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Container(
-                  height: 6.h,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: Color(0xffd1f0ff),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Cancel Attendees",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Spacer(),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              enabled: true,
-                              border: InputBorder.none,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              hintText: '    00',
-                              hintStyle: TextStyle(
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: TextStyle(
-                              color: Color(0xff4B5768),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildStatRow("Progress in Percentage", "60/100"),
+                SizedBox(height: 1.h),
+                _buildLinearProgressBar(60),
+                SizedBox(height: 1.h),
+                _buildStatText("Occupation: 60%"),
+                SizedBox(height: 1.h),
+                _buildInputField("Total Validated Attendees", "60/100"),
+                SizedBox(height: 1.h),
+                _buildInputField("Checked In Attendees", "60"),
+                SizedBox(height: 1.h),
+                _buildInputField("Checked Out Attendees", "00"),
+                SizedBox(height: 1.h),
+                _buildInputField("Cancel Attendees", "00"),
               ],
             ),
           ),
@@ -299,6 +57,114 @@ Widget content9(BuildContext context) {
       ),
     );
   });
+}
+
+Widget _buildTitle(String title) {
+  return Text(
+    title,
+    style: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.w600,
+      fontSize: 15.sp,
+    ),
+  );
+}
+
+Widget _buildStatRow(String label, String value) {
+  return Row(
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 12.sp,
+        ),
+      ),
+      Spacer(),
+      Text(
+        value,
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
+          fontSize: 12.sp,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildLinearProgressBar(int progress) {
+  return LinearProgressBar(
+    maxSteps: 100,
+    progressType: LinearProgressBar.progressTypeLinear,
+    currentStep: progress,
+    progressColor: Colors.blue,
+    backgroundColor: Colors.grey,
+    minHeight: 10,
+  );
+}
+
+Widget _buildStatText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: Colors.blue,
+      fontWeight: FontWeight.w500,
+      fontSize: 12.sp,
+    ),
+  );
+}
+
+Widget _buildInputField(String label, String hint) {
+  return Container(
+    height: 6.h,
+    width: 100.w,
+    decoration: BoxDecoration(
+      color: Color(0xffd1f0ff),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.blue),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 9.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                enabled: true,
+                border: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                hintText: hint,
+                hintStyle: TextStyle(
+                  fontSize: 9.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blue,
+                ),
+              ),
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: Color(0xff4B5768),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 void _showAlertSent(BuildContext context) {

@@ -26,7 +26,6 @@ class _OwnerListingState extends State<OwnerListing> {
   @override
   void initState() {
     fetchOwnerData();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -100,7 +99,7 @@ class _OwnerListingState extends State<OwnerListing> {
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
                     onTap: () {
-                      PageTransition.pageNavigation(page: const CreateOwner());
+                      PageTransition.pageNavigation(page:  CreateOwner());
                     },
                     child: Container(
                       height: 4.h,

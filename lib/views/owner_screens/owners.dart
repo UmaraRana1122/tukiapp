@@ -858,3 +858,53 @@ class _OwnersState extends State<Owners> {
     );
   }
 }
+Widget labeledWidget(heading, child) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      left: 0,
+      right: 0,
+      bottom: 10.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          heading,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 5),
+        child,
+      ],
+    ),
+  );
+}
+class CustomDropdown extends StatelessWidget {
+  final List<String> options;
+  final String? hint;
+  final void Function(String?)? onChanged;
+
+  const CustomDropdown({
+    required this.options,
+    this.hint,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: null,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hint,
+      ),
+      items: options.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+}

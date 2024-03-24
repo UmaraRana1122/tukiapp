@@ -1,14 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
-import '../../models/add_eventmodel.dart';
-import '../../widgets/custom_textfield.dart';
-import '../../widgets/custom_widget.dart';
-
-import '../../constants/global_variables.dart';
-import '../../widgets/date_picker.dart';
-import 'widgets/labeled_textfield.dart';
+import 'package:tukiapp/constants/global_variables.dart';
+import 'package:tukiapp/models/add_eventmodel.dart';
+import 'package:tukiapp/widgets/custom_textfield.dart';
+import 'package:tukiapp/widgets/date_picker.dart';
+// Import your other necessary files
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -20,7 +21,9 @@ class CreateEvent extends StatefulWidget {
 class _CreateEventState extends State<CreateEvent> {
   bool loading = false;
   bool isLoading = false;
-  Event? event;
+  AddEvent? add;
+  int selected = -1; // Track selected category index
+  File? _image;
 
   @override
   void initState() {
@@ -70,95 +73,159 @@ class _CreateEventState extends State<CreateEvent> {
     });
   }
 
+  Future<void> _getImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   List<String> eventsCategory = ['Sports', 'BarBQ', 'Parties', 'Others'];
   List<String> weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   String selectedDay = 'Mon';
-  int selected = -1;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-
-  Widget _buildSection(String title, Widget? child) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        width: 95.w,
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.4),
-          ),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: child,
-      ),
-    );
-  }
-
-  Widget labeledWidget(heading, child) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 0,
-        right: 0,
-        bottom: 10.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            heading,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          child,
-        ],
-      ),
-    );
-  }
-
-  Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (pickedTime != null && pickedTime != startTime) {
-      setState(() {
-        startTime = pickedTime;
-      });
-    }
-  }
-
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (pickedTime != null && pickedTime != endTime) {
-      setState(() {
-        endTime = pickedTime;
-      });
-    }
-  }
-
-  String _formatTime(TimeOfDay time) {
-    final hours = time.hour.toString().padLeft(2, '0');
-    final minutes = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
-    return '$hours:$minutes $period';
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> eventsCategory = [
+      {'name': 'Sports'},
+      {'name': 'BarBQ'},
+      {'name': 'Parties'},
+      {'name': 'Others'},
+    ];
+    Future<void> _selectStartTime(BuildContext context) async {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null && pickedTime != startTime) {
+        setState(() {
+          startTime = pickedTime;
+        });
+      }
+    }
+
+    Future<void> _selectEndTime(BuildContext context) async {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null && pickedTime != endTime) {
+        setState(() {
+          endTime = pickedTime;
+        });
+      }
+    }
+
+    String _formatTime(TimeOfDay time) {
+      final hours = time.hour.toString().padLeft(2, '0');
+      final minutes = time.minute.toString().padLeft(2, '0');
+      final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+      return '$hours:$minutes $period';
+    }
+
+    Widget _buildSection(String title, Widget? child) {
+      if (selected == 2) {
+        if (title == 'Date') {
+          return Container();
+        } else if (title == 'Allocate Guard') {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              labeledWidget(
+                'Select Party Organizer',
+                CustomDropdown(
+                  options: const [
+                    "Party Planner 1",
+                    "Party Planner 2",
+                    "Party Planner 3",
+                  ],
+                  hint: '  Select',
+                  onChanged: (String) {},
+                ),
+              ),
+            ],
+          );
+        }
+      }
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          width: 95.w,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.4),
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: child,
+        ),
+      );
+    }
+
+    Widget _buildSectionParty(String title, Widget? child) {
+      if (selected == 0) {
+        if (title == 'Parties') {
+        } else if (title == 'Allocate Guard') {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              labeledWidget(
+                'Select Party Organizer',
+                CustomDropdown(
+                  options: const [
+                    "Party Planner 1",
+                    "Party Planner 2",
+                    "Party Planner 3",
+                  ],
+                  hint: '  Select',
+                  onChanged: (String) {},
+                ),
+              ),
+            ],
+          );
+        }
+      }
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          width: 95.w,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.4),
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: child,
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Add Event",
           style: TextStyle(
-              color: Colors.black,
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w600),
+            color: Colors.black,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -170,49 +237,69 @@ class _CreateEventState extends State<CreateEvent> {
       body: loading
           ? const Center(
               child: CircularProgressIndicator(
-              color: AppColors.primaryColor,
-            ))
+                color: AppColors.primaryColor,
+              ),
+            )
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: eventsCategory
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) => GestureDetector(
-                            onTap: () {
-                              setState(() => selected = entry.key);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: entry.key != selected
-                                    ? Colors.white
-                                    : AppColors.buttonColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: AppColors.buttonColor,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: eventsCategory
+                          .asMap()
+                          .entries
+                          .map(
+                            (entry) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selected = entry.key;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 6,
                                 ),
-                              ),
-                              child: Text(
-                                entry.value,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
                                   color: entry.key != selected
-                                      ? AppColors.buttonColor
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : AppColors.buttonColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: AppColors.buttonColor,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons
+                                          .sports_soccer, // Replace with your icon
+                                      color: entry.key != selected
+                                          ? AppColors.buttonColor
+                                          : Colors.white,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      entry.value['name'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: entry.key != selected
+                                            ? AppColors.buttonColor
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Text(
@@ -388,53 +475,71 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                   _buildSection(
                     '',
-                    labeledWidget(
-                      'Expiry Date',
-                      SizedBox(
-                        height: 44,
-                        child: DatePickerWidget(
-                          onDateSelected: (d) {},
-                        ),
-                      ),
-                    ),
-                  ),
-                  _buildSection(
-                    '',
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labeledWidget(
-                          'Charges',
-                          const CustomTextField(hintText: '\$200'),
+                        Text(
+                          "Charges",
+                          style: TextStyle(
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w600),
                         ),
-                        labeledWidget(
-                          'Description',
-                          const CustomTextField(
-                            hintText: 'Write here',
-                            maxLines: 4,
-                          ),
+                        SizedBox(
+                          height: 1.h,
                         ),
+                        const CustomTextField(
+                            hintText: '\$200', fillColor: Color(0xFFF5F5F5)),
                         const SizedBox(height: 10),
+                        Text(
+                          "Description",
+                          style: TextStyle(
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        const CustomTextField(
+                            maxLines: 6,
+                            keyboardType: TextInputType.multiline,
+                            hintText: "Write here",
+                            fillColor: Color(0xFFF5F5F5)),
+                        SizedBox(
+                          height: 1.h,
+                        ),
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: const Color(0xFFD0D5DD),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.cloud_upload_outlined,
-                                color: Color(0xFF667085),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'Upload Picture',
-                                style: bodyNormal.copyWith(
-                                    color: const Color(0xFF667085)),
-                              )
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              _showImagePicker(context);
+                            },
+                            child: _image != null
+                                ? Image.file(
+                                    _image!,
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.cloud_upload_outlined,
+                                        color: Color(0xFF667085),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        'Upload Picture',
+                                        style: TextStyle(
+                                          color: const Color(0xFF667085),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ),
                       ],
@@ -449,7 +554,9 @@ class _CreateEventState extends State<CreateEvent> {
                         Text(
                           'Allocate Guard',
                           style: TextStyle(
-                              fontSize: 11.sp, fontWeight: FontWeight.w700),
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         SizedBox(
                           height: 1.h,
@@ -524,6 +631,36 @@ class _CreateEventState extends State<CreateEvent> {
             ),
     );
   }
+
+  Future<void> _showImagePicker(BuildContext context) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () {
+                  _getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  _getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
 Widget labeledWidget(heading, child) {
@@ -545,4 +682,79 @@ Widget labeledWidget(heading, child) {
       ],
     ),
   );
+}
+
+class CustomButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final String buttonText;
+
+  const CustomButton({
+    Key? key,
+    required this.onTap,
+    required this.buttonText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Text(
+          buttonText,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomDropdown extends StatelessWidget {
+  final List<String> options;
+  final String hint;
+  final ValueChanged<String?> onChanged;
+
+  const CustomDropdown({
+    Key? key,
+    required this.options,
+    required this.hint,
+    required this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      items: options.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      hint: Text(hint),
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 0.7,
+          ),
+        ),
+      ),
+    );
+  }
 }

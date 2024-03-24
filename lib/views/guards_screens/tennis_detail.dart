@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/constants/global_variables.dart';
+import 'package:tukiapp/generated/assets.dart';
 import 'package:tukiapp/views/admin_screens/widgets/custom_alert.dart';
 import 'package:tukiapp/views/guards_screens/guard_report.dart';
-import 'package:tukiapp/views/guards_screens/qr_screen.dart';
-import 'package:tukiapp/widgets/alert8.dart';
-import 'package:tukiapp/widgets/create_alert.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
-import 'package:tukiapp/widgets/expenses_history.dart';
 import 'package:tukiapp/widgets/stats_alert.dart';
-import 'package:tukiapp/widgets/warning_alert.dart';
 
-import '../../constants/custom_navigation.dart';
-import '../../generated/assets.dart';
 
 class TenisDetail extends StatefulWidget {
   TenisDetail({Key? key});
@@ -929,4 +922,35 @@ Widget labeledWidget(heading, child) {
       ],
     ),
   );
+}
+
+class CustomDropdown extends StatelessWidget {
+  final List<String> options;
+  final String? hint;
+  final void Function(String?)? onChanged;
+
+  const CustomDropdown({
+    required this.options,
+    this.hint,
+    this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: null,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        hintText: hint,
+      ),
+      items: options.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
 }
