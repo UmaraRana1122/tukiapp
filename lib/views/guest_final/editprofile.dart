@@ -7,8 +7,6 @@ import 'package:sizer/sizer.dart';
 import 'package:tukiapp/models/veiw_model.dart';
 import 'package:tukiapp/views/admin_screens/widgets/labeled_textfield.dart';
 import '../../../generated/assets.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import '../../../constants/global_variables.dart';
 

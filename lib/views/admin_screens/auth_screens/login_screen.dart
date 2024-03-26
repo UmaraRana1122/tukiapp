@@ -17,7 +17,6 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   final AuthController _authController = Get.find<AuthController>();
   final TextEditingController emailEditingController = TextEditingController();
@@ -177,16 +176,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         PageTransition.pageProperNavigation(
                             page: const AdminDashboard());
 
-                        // Map<String, String> map = {
-                        //   'api_v1_user[email]':
-                        //       emailEditingController.text.toString(),
-                        //   'api_v1_user[password]':
-                        //       passwordEditingController.text.toString(),
-                        // };
-                        // if (key.currentState!.validate()) {
-                        //   FocusManager.instance.primaryFocus!.unfocus();
-                        //   _authController.userLogin(map, context, false);
-                        // }
+                        Map<String, String> map = {
+                          'api_v1_user[email]':
+                              emailEditingController.text.toString(),
+                          'api_v1_user[password]':
+                              passwordEditingController.text.toString(),
+                        };
+                        if (key.currentState!.validate()) {
+                          FocusManager.instance.primaryFocus!.unfocus();
+                          _authController.userLogin(map, context, false);
+                        }
                       },
                     ),
                   ),

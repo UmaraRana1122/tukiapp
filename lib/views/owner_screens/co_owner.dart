@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/generated/assets.dart';
-import 'package:tukiapp/views/guards_screens/guard_report.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
 
 class CreateCoOwner extends StatefulWidget {
   const CreateCoOwner({Key? key}) : super(key: key);

@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/auth_screens/login_screen.dart';
 
 import '../../../generated/assets.dart';
-import '../../../constants/global_variables.dart';
 
 class LabeledTextField extends StatelessWidget {
   final String heading;

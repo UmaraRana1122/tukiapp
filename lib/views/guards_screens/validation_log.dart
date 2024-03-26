@@ -4,11 +4,9 @@ import 'package:sizer/sizer.dart';
 import 'package:tukiapp/constants/global_variables.dart';
 import 'package:tukiapp/views/admin_screens/widgets/custom_alert.dart';
 import 'package:tukiapp/views/guards_screens/guard_report.dart';
-import 'package:tukiapp/views/guards_screens/qr_screen.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
 import 'package:tukiapp/widgets/custom_widget.dart';
 
-import '../../constants/custom_navigation.dart';
 import '../../generated/assets.dart';
 
 class ValidationLog extends StatefulWidget {

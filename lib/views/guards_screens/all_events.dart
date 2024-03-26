@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/constants/custom_navigation.dart';
-import 'package:tukiapp/controllers/admin_controller.dart';
 import 'package:tukiapp/generated/assets.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
 
-import '../admin_screens/event_listing.dart';
 import 'guard_report.dart';
 import 'tennis_detail.dart';
 
@@ -25,7 +21,6 @@ class _AllEventEventState extends State<AllEvent> {
   int selected = -1;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-  final AdminController _adminController = Get.find<AdminController>();
 
   Widget _buildSection(String title, Widget? child) {
     return Padding(

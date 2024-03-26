@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/constants/global_variables.dart';
-import 'package:tukiapp/generated/assets.dart';
-import 'package:tukiapp/views/guards_screens/guard_report.dart';
 import 'package:tukiapp/widgets/alert8.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
 import 'package:tukiapp/widgets/dropWidget.dart';
 
-import '../../constants/custom_navigation.dart';
-import '../admin_screens/owner_details.dart';
 
 class ListCoOwner extends StatelessWidget {
   const ListCoOwner({Key? key});

@@ -5,17 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/splash_page.dart';
 import 'package:tukiapp/views/admin_screens/auth_screens/edit_profile.dart';
-import 'package:tukiapp/views/admin_screens/create_event.dart';
 import 'package:tukiapp/views/admin_screens/create_guard.dart';
-import 'package:tukiapp/views/admin_screens/create_owner.dart';
 import 'package:tukiapp/views/admin_screens/event_listing.dart';
 import 'package:tukiapp/views/admin_screens/guard_listing.dart';
 import 'package:tukiapp/views/admin_screens/owners_listing.dart';
-import 'package:tukiapp/views/admin_screens/widgets/custom_alert.dart';
 import 'package:tukiapp/views/admin_screens/widgets/drawer_list_tile.dart';
 import 'package:tukiapp/views/owner_screens/co_owner.dart';
 import 'package:tukiapp/widgets/create_alert.dart';
-import 'package:tukiapp/widgets/expense_alert.dart';
 import '../../constants/global_variables.dart';
 import '../../generated/assets.dart';
 

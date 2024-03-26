@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/widgets/labeled_textfield.dart';
 
-import '../../constants/custom_validators.dart';
 import '../../constants/global_variables.dart';
-import '../../widgets/custom_textfield.dart';
 import '../../widgets/custom_widget.dart';
 
 class CoOwnerProfile extends StatefulWidget {

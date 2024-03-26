@@ -6,7 +6,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../constants/global_variables.dart';
 import '../../../constants/custom_validators.dart';
-import '../../../controllers/auth_controller.dart';
 import '../../../widgets/custom_textfield.dart';
 import '../../../widgets/custom_widget.dart';
 import 'otp_screen.dart';
@@ -21,7 +20,6 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController emailEditingController = TextEditingController();
   final GlobalKey<FormState> key = GlobalKey<FormState>();
-  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

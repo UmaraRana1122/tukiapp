@@ -1,15 +1,10 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/create_event.dart';
-import 'package:tukiapp/views/admin_screens/settings.dart';
 import 'package:tukiapp/widgets/alert8.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
 import 'package:tukiapp/widgets/dropWidget.dart';
 import 'package:tukiapp/widgets/warning_alert.dart';
 

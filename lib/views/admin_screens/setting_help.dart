@@ -40,7 +40,7 @@ class _SettingsHelpState extends State<SettingsHelp> {
           icon: const Icon(
             Icons.navigate_before_outlined,
             color: Colors.black,
-          ), // You can use any other icon you prefer
+          ), 
           onPressed: () {
             Get.back();
           },

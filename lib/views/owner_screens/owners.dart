@@ -4,17 +4,13 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/controllers/admin_controller.dart';
 import 'package:tukiapp/generated/assets.dart';
-import 'package:tukiapp/views/admin_screens/co_owner_details.dart';
 import 'package:tukiapp/views/admin_screens/event_listing.dart';
 import 'package:tukiapp/views/admin_screens/owner_details.dart';
-import 'package:tukiapp/views/admin_screens/tenant_details.dart';
 import 'package:tukiapp/widgets/custom_textfield.dart';
-import 'package:tukiapp/widgets/expense_alert.dart';
 import 'package:tukiapp/widgets/expenses_history.dart';
 
 import '../../constants/custom_navigation.dart';
 import '../../constants/global_variables.dart';
-import '../../widgets/custom_widget.dart';
 import '../guards_screens/guard_report.dart';
 
 class Owners extends StatefulWidget {

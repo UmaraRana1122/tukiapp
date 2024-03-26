@@ -2,7 +2,6 @@
 //
 //     final apartmentModel = apartmentModelFromJson(jsonString);
 
-import 'dart:convert';
 
 
 class ApartmentModel {

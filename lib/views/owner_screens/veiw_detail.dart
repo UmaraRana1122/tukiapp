@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/views/admin_screens/owner_details.dart';
-import 'package:tukiapp/views/admin_screens/tenant_details.dart';
 import '../../constants/custom_navigation.dart';
 
 import '../../constants/global_variables.dart';

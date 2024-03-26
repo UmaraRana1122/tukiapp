@@ -1,13 +1,10 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 import 'package:tukiapp/models/events_model.dart';
-import 'package:tukiapp/models/upcoming_events.dart';
 
-import '../../constants/global_variables.dart';
 
 class UpcomingEvent extends StatefulWidget {
   const UpcomingEvent({Key? key}) : super(key: key);

@@ -1,14 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/create_event.dart';
-import 'package:tukiapp/views/admin_screens/settings.dart';
-import 'package:tukiapp/views/guards_screens/tennis_detail.dart';
-import 'package:tukiapp/widgets/custom_widget.dart';
 
 File? _selectedAttachment;
 

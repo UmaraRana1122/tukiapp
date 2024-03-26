@@ -2,7 +2,6 @@
 //
 //     final upcomingEventModel = upcomingEventModelFromJson(jsonString);
 
-import 'dart:convert';
 
 
 

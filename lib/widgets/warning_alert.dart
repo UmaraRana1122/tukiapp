@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/settings.dart';
 
 void alertPOP7(context) {
   showDialog(

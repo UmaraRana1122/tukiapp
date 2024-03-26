@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/guards_screens/guard_dashboard.dart';
-import 'package:tukiapp/views/guest_final/guest_dashboard.dart';
 import 'package:tukiapp/views/owner_screens/owner_profile.dart';
 
 class OwnerLogin extends StatefulWidget {

@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:tukiapp/constants/custom_navigation.dart';
+import 'package:tukiapp/views/admin_screens/admin_dashboard.dart';
+import 'package:tukiapp/views/admin_screens/create_event.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
@@ -44,15 +48,36 @@ class _AdminLoginState extends State<AdminLogin> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
+
+        // Store the email locally using SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', _emailController.text.trim());
+
         // Handle success, maybe navigate to another screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AdminDashboard()),
+        );
       } else {
         final errorMessage = jsonDecode(response.body)['message'];
         print(errorMessage);
         // Show error message to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       print("Error: $e");
       // Handle any errors that occurred during the process
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred. Please try again."),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -171,7 +196,12 @@ class _AdminLoginState extends State<AdminLogin> {
 
   Widget _buildPasswordField(String label, TextEditingController controller,
       String? Function(String?)? validator) {
-    return _buildTextField(label, controller, true, validator);
+    return _buildTextField(label, controller, true, (value) {
+      if (value == null || value.isEmpty) {
+        return 'Password is required';
+      }
+      return null;
+    });
   }
 
   Widget _buildRememberAndForgotRow() {
@@ -192,6 +222,7 @@ class _AdminLoginState extends State<AdminLogin> {
         Spacer(),
         TextButton(
           onPressed: () {
+            // Add Forgot Password Logic
           },
           child: Text(
             "Forgot password ",
@@ -210,15 +241,13 @@ class _AdminLoginState extends State<AdminLogin> {
         color: Color(0xff00A3FF),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: TextButton(
-        onPressed: _login,
-        child: Text(
-          "Sign in",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            fontSize: 14.sp,
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: CustomButton(
+          onTap: () {
+            PageTransition.pageProperNavigation(page: const AdminDashboard());
+          },
+          buttonText: "Sign in",
         ),
       ),
     );

@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/alert_page.dart';
-import 'package:tukiapp/views/admin_screens/auth_screens/otp_screen.dart';
-import 'package:tukiapp/views/admin_screens/settings.dart';
 
 void alertPOp(context) {
   showDialog(

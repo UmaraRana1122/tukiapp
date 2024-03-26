@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'qr_screen.dart';
 import 'upcoming_event.dart';
 import 'validate_person.dart';
 
 import '../../constants/custom_navigation.dart';
-import '../../constants/custom_validators.dart';
 import '../../constants/global_variables.dart';
-import '../../widgets/custom_textfield.dart';
-import '../../widgets/custom_widget.dart';
 
 class MainDashboard extends StatefulWidget {
   const MainDashboard({Key? key}) : super(key: key);
