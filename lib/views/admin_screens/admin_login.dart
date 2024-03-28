@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/constants/custom_navigation.dart';
 import 'package:tukiapp/views/admin_screens/admin_dashboard.dart';
-import 'package:tukiapp/views/admin_screens/create_event.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key}) : super(key: key);
@@ -49,11 +47,9 @@ class _AdminLoginState extends State<AdminLogin> {
         final responseData = jsonDecode(response.body);
         print(responseData);
 
-        // Store the email locally using SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('email', _emailController.text.trim());
 
-        // Handle success, maybe navigate to another screen
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AdminDashboard()),
@@ -61,7 +57,6 @@ class _AdminLoginState extends State<AdminLogin> {
       } else {
         final errorMessage = jsonDecode(response.body)['message'];
         print(errorMessage);
-        // Show error message to the user
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),
@@ -71,7 +66,6 @@ class _AdminLoginState extends State<AdminLogin> {
       }
     } catch (e) {
       print("Error: $e");
-      // Handle any errors that occurred during the process
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("An error occurred. Please try again."),
@@ -158,7 +152,7 @@ class _AdminLoginState extends State<AdminLogin> {
         SizedBox(height: 1.h),
         TextFormField(
           controller: controller,
-          obscureText: isPassword,
+          obscureText: isPassword && _isObscured, // Use _isObscured here
           cursorColor: Color(0xff4B5768),
           style: TextStyle(color: Color(0xff4B5768)),
           decoration: InputDecoration(
@@ -221,9 +215,7 @@ class _AdminLoginState extends State<AdminLogin> {
         ),
         Spacer(),
         TextButton(
-          onPressed: () {
-            // Add Forgot Password Logic
-          },
+          onPressed: () {},
           child: Text(
             "Forgot password ",
             style: TextStyle(fontWeight: FontWeight.w600),
@@ -243,11 +235,16 @@ class _AdminLoginState extends State<AdminLogin> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(0),
-        child: CustomButton(
-          onTap: () {
-            PageTransition.pageProperNavigation(page: const AdminDashboard());
-          },
-          buttonText: "Sign in",
+        child: TextButton(
+          onPressed: _login,
+          child: Text(
+            "Sign in",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );

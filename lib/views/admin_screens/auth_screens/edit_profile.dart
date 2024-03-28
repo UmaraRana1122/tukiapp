@@ -169,7 +169,7 @@ class _EditProfileState extends State<EditProfile> {
                 left: 0,
                 right: 0,
                 bottom: 15.0,
-                top: 10.0,
+                top: 10.0, 
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

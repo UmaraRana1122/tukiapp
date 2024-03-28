@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tukiapp/views/admin_screens/auth_screens/edit_profile.dart';
+import 'package:tukiapp/views/admin_screens/admin_login.dart';
+import 'package:tukiapp/views/admin_screens/event_listing.dart';
 
 import 'controllers/admin_controller.dart';
 import 'controllers/auth_controller.dart';
@@ -37,9 +38,9 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: EditProfile(
-            // eventData: null,
-            ),
+        home: EventListing(
+          eventData: null,
+        ),
       );
     });
   }

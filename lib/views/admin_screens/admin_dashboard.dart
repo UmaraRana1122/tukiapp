@@ -371,13 +371,24 @@ class _AdminDashboardState extends State<AdminDashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 18),
-                              child: Icon(
-                                Icons.more_horiz_rounded,
-                                color: Colors.grey,
-                              ),
-                            ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 18),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Dinner",
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Icon(
+                                      Icons.more_horiz_rounded,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                )),
                           ),
                           SizedBox(
                             height: 1.h,
@@ -535,8 +546,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       padding: const EdgeInsets.all(5.0),
                       child: InkWell(
                         onTap: () {
-                          PageTransition.pageNavigation(
-                              page:  CreateOwner());
+                          PageTransition.pageNavigation(page: CreateOwner());
                         },
                         child: Container(
                           height: 5.h,
